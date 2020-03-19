@@ -4,6 +4,10 @@ Rails.application.routes.draw do
   ActiveAdmin.routes(self)
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 
+  namespace :v1 do
+    resources :posts
+  end
+
   get '/signed_out' => 'home#signed_out'
   root 'home#index'
 end
