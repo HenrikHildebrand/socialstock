@@ -1,0 +1,23 @@
+<%
+=begin%>
+ <% if user_signed_in? %>
+  <%= link_to "logout", destroy_user_session_path, method: :delete %> 
+  <%= react_component('Hello') %>
+<% else %>
+  <%= link_to "login", new_user_session_path %> 
+<% end %> 
+<%
+=end%>
+
+<% if user_signed_in? %>
+  <div id="root">
+    <%= react_component('App', {user: current_user, csrf: session[:_csrf_token]}) %>
+  </div>
+<% else %>
+  <div class="card  mw-650">
+    <h5 class="card-header">Please login to continue!</h5>
+    <div class="card-body pd-20">
+      <%= link_to "login", new_user_session_path, class: 'btn btn-info btn-lg'%>
+    </div>
+  </div>
+<% end %>
