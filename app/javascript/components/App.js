@@ -27,20 +27,27 @@ class App extends React.Component {
     componentDidMount() {
         this.setState({
             loaded: true,
-            csrf: this.props.csrf
+            user: this.props.user
         })
     }
+
+    getAuth = () => (
+        {
+            'X-User-Email': this.state.user.email,
+            'X-User-Token': this.state.user.authentication_token
+        }
+    )
 
     logout = () => {
         fetch('/users/sign_out', {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
-                'X_CSRF_Token': this.state.csrf
+                ...this.getAuth()
             }
         }).then(()=> {
             this.setState({loaded: false});
-            window.location = "/signed_out"
+            // window.location = "/signed_out"
         })
     }
 
@@ -51,6 +58,7 @@ class App extends React.Component {
                     <div  label="Info" style={styles.container}>
                         <a className="btn btn-danger" style={styles.logout} onClick={this.logout} >logout</a>
                         <h3>Hello {this.props.user.email}!</h3>
+                        <p>{JSON.stringify(this.props.user)}</p>
                     </div>
                     <div  label="Info" style={styles.container}>
                         <h3>Other content</h3>
